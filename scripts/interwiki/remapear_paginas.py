@@ -1,6 +1,7 @@
 from mwclient import Site
 from mwclient.page import Page
 import json
+import sys
 from common.tarea import Tarea
 from common.principal import Principal
 from scripts.interwiki.estrategias.estrategia_nombredirecto import EstrategiaNombreDirecto
@@ -27,8 +28,10 @@ class Plantilla(Tarea):
             self.estrategias.append(estrategia(self.cliente))
 
     def remapear_pagina(self, nombre):
-        self.logger.info("Remapeando página " + nombre + "...")
         pagina = Page(self.cliente, nombre)
+        if pagina.redirect:
+            return self.remapear_pagina(pagina.resolve_redirect().name)
+        self.logger.info("Remapeando página " + nombre + "...")
         tarea = TareaInterwiki(pagina, self.cliente, self.interwikis, self.logger)
         tarea.limpiar_interwikis_rotos()
         faltan = list(tarea.interwikis_faltantes())
@@ -42,7 +45,18 @@ class Plantilla(Tarea):
         tarea.guardar_cambios()
 
     def tarea(self):
-        self.remapear_pagina("Internet")
+        if self.tareas == "":
+            self.logger.error("Necesito un nombre de archivo de tareas")
+            sys.exit(2)
+        try:
+            with open(self.tareas, "r", encoding='utf-8') as f:
+                for tarea in f.readlines():
+                    try:
+                        self.remapear_pagina(tarea)
+                    except Exception as e:
+                        self.logger.error(str(e))
+        except Exception:
+            print("Hubo un error al leer el archivo")
 
 
 Principal(DESCRIPTION).iniciar(Plantilla())

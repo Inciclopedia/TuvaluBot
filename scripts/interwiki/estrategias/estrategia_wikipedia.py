@@ -15,6 +15,8 @@ class EstrategiaWikipedia(Estrategia):
 
     def buscar_articulo_en_wikipedia(self, nombre) -> Optional[Page]:
         articulo_wp = Page(self.clienteWikipedia, nombre)
+        if articulo_wp.redirect:
+            articulo_wp = articulo_wp.resolve_redirect()
         return articulo_wp if articulo_wp.exists else None
 
     def get_name(self) -> str:

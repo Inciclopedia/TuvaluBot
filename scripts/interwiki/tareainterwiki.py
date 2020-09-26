@@ -105,7 +105,7 @@ class TareaInterwiki(object):
 
     def limpiar_interwikis_rotos(self):
         self.logger.debug("Limpiando artículo %s", self.pagina.name)
-        for idioma, articulos in self.enlaces_interwiki.items():
+        for idioma, articulos in list(self.enlaces_interwiki.items()):
             for articulo in articulos:
                 self.buscar_articulo_en_interwiki(idioma, articulo, existia_antes=True)
 

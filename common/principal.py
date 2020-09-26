@@ -20,6 +20,7 @@ class Principal(object):
         parser.add_argument('usuario', type=str,
                             help='Nombre de usuario de Inciclopedia')
         parser.add_argument('password', type=str, help='Password de Inciclopedia')
+        parser.add_argument('-t', '--tareas', default='', help='Ubicación de la lista de tareas')
         parser.add_argument('-d', '--debug', action='store_true', help='Modo debug')
         args = parser.parse_args()
         return args
@@ -50,5 +51,5 @@ class Principal(object):
             sys.exit(2)
 
         # Triple backflip de reflection para obtener automágicamente la primera clase definida
-        tarea.bootstrap(cliente, logger)
+        tarea.bootstrap(cliente, logger, args.tareas)
         tarea.run()
