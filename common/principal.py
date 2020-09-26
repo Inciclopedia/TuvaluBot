@@ -1,9 +1,10 @@
 # Runner principal de tareas del bot
+import logging
 from logging import Logger
 
 from mwclient import Site, MaximumRetriesExceeded, LoginError, APIError
+
 from common.tarea import Tarea
-import logging
 
 URL = 'inciclopedia.org'
 
@@ -39,7 +40,7 @@ class Principal(object):
         logger.info("Conectado a Inciclopedia, iniciando sesión")
         try:
             cliente.usuario = args.usuario
-            cliente.passowrd = args.password
+            cliente.password = args.password
             cliente.login(args.usuario, args.password)
             logger.info("Sesión iniciada como " + args.usuario)
         except LoginError:
@@ -53,5 +54,5 @@ class Principal(object):
             sys.exit(2)
 
         # Triple backflip de reflection para obtener automágicamente la primera clase definida
-        tarea.bootstrap(cliente, logger, args.tareas, args.password)
+        tarea.bootst<rap(cliente, logger, args.tareas, args.password)
         tarea.run()
