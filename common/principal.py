@@ -6,7 +6,7 @@ from common.tarea import Tarea
 import logging
 
 URL = 'inciclopedia.org'
-DEBUG = False
+
 
 class Principal(object):
 
@@ -14,11 +14,13 @@ class Principal(object):
         self.description = description
 
     def __parse_args(self):
+        global DEBUG
         import argparse
         parser = argparse.ArgumentParser(description=self.description)
         parser.add_argument('usuario', type=str,
                             help='Nombre de usuario de Inciclopedia')
         parser.add_argument('password', type=str, help='Password de Inciclopedia')
+        parser.add_argument('-d', '--debug', action='store_true', help='Modo debug')
         args = parser.parse_args()
         return args
 
@@ -28,10 +30,9 @@ class Principal(object):
 
     def iniciar(self, tarea: Tarea):
         import sys
-        import inspect
         args = self.__parse_args()
         logger = self.__init_logger()
-        logger.setLevel(logging.INFO if not DEBUG else logging.DEBUG)
+        logger.setLevel(logging.INFO if not args.debug else logging.DEBUG)
         logger.info("Iniciando TuvaluBot")
         cliente = Site(URL)
         logger.info("Conectado a Inciclopedia, iniciando sesión")

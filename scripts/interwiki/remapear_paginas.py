@@ -31,8 +31,6 @@ class Plantilla(Tarea):
         pagina = Page(self.cliente, nombre)
         tarea = TareaInterwiki(pagina, self.cliente, self.interwikis, self.logger)
         tarea.limpiar_interwikis_rotos()
-        # Es necesario guardar los cambios ahora para que se busquen los interwikis rotos una vez eliminados.
-        tarea.guardar_cambios()
         faltan = list(tarea.interwikis_faltantes())
         for idioma in faltan:
             self.logger.debug("Buscando artículo en " + idioma)
@@ -43,9 +41,8 @@ class Plantilla(Tarea):
                     break
         tarea.guardar_cambios()
 
-
     def tarea(self):
-        self.remapear_pagina("Albert Einstein")
+        self.remapear_pagina("Internet")
 
 
 Principal(DESCRIPTION).iniciar(Plantilla())
