@@ -9,15 +9,18 @@ class Tarea(ABC):
         self.cliente: Site = None
         self.logger: Logger = None
         self.tareas = ""
+        self.password = ""
+
 
     @abstractmethod
     def tarea(self):
         raise
 
-    def bootstrap(self, cliente: Site, logger: Logger, tareas: str):
+    def bootstrap(self, cliente: Site, logger: Logger, tareas: str, password: str):
         self.cliente = cliente
         self.logger = logger
         self.tareas = tareas
+        self.password = password
 
     def run(self):
         if self.cliente is None or self.logger is None:

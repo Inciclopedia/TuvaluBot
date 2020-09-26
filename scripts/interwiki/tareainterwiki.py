@@ -145,7 +145,7 @@ class TareaInterwiki(object):
                 self.texto = self.texto + interwikis[idioma]
 
     def guardar_cambios(self):
-        self.ordenar_interwikis()
+        #self.ordenar_interwikis()
         if self.editado:
             self.logger.info("Guardando artículo actualizado %s", self.pagina.name)
             self.pagina.edit(self.texto, summary=self.generar_sumario())

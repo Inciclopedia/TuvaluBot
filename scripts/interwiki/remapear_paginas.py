@@ -1,4 +1,4 @@
-from mwclient import Site
+from mwclient import Site, LoginError
 from mwclient.page import Page
 import json
 import sys
@@ -50,9 +50,15 @@ class Plantilla(Tarea):
             sys.exit(2)
         try:
             with open(self.tareas, "r", encoding='utf-8') as f:
-                for tarea in f.readlines():
+                for tarea in f.read().split('\n'):
                     try:
                         self.remapear_pagina(tarea)
+                    except LoginError:
+                        try:
+                            self.cliente.login(self.cliente.username, self.password)
+                        except LoginError as e:
+                            # double fault...
+                            self.logger.error(str(e))
                     except Exception as e:
                         self.logger.error(str(e))
         except Exception:
