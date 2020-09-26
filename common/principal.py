@@ -54,5 +54,5 @@ class Principal(object):
             sys.exit(2)
 
         # Triple backflip de reflection para obtener automágicamente la primera clase definida
-        tarea.bootst<rap(cliente, logger, args.tareas, args.password)
+        tarea.bootstrap(cliente, logger, args.tareas, args.password)
         tarea.run()
