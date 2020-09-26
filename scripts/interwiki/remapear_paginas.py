@@ -1,9 +1,11 @@
-from mwclient import Site, LoginError
-from mwclient.page import Page
 import json
 import sys
-from common.tarea import Tarea
+
+from mwclient import LoginError
+from mwclient.page import Page
+
 from common.principal import Principal
+from common.tarea import Tarea
 from scripts.interwiki.estrategias.estrategia_nombredirecto import EstrategiaNombreDirecto
 from scripts.interwiki.estrategias.estrategia_traduccion import EstrategiaTraduccion
 from scripts.interwiki.estrategias.estrategia_wikipedia import EstrategiaWikipedia
@@ -52,16 +54,15 @@ class Plantilla(Tarea):
             with open(self.tareas, "r", encoding='utf-8') as f:
                 for tarea in f.read().split('\n'):
                     try:
-                        self.remapear_pagina(tarea)
+                        self.cliente.login(self.cliente.username, self.password)
                     except LoginError:
-                        try:
-                            self.cliente.login(self.cliente.username, self.password)
-                        except LoginError as e:
-                            # double fault...
-                            self.logger.error(str(e))
+                        pass
+
+                    try:
+                        self.remapear_pagina(tarea)
                     except Exception as e:
                         self.logger.error(str(e))
-        except Exception:
+        except Exception as e:
             print("Hubo un error al leer el archivo")
 
 
