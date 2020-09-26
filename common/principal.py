@@ -6,7 +6,7 @@ from common.tarea import Tarea
 import logging
 
 URL = 'inciclopedia.org'
-
+DEBUG = False
 
 class Principal(object):
 
@@ -31,7 +31,7 @@ class Principal(object):
         import inspect
         args = self.__parse_args()
         logger = self.__init_logger()
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.INFO if not DEBUG else logging.DEBUG)
         logger.info("Iniciando TuvaluBot")
         cliente = Site(URL)
         logger.info("Conectado a Inciclopedia, iniciando sesión")

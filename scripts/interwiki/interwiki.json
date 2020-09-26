@@ -1,0 +1,247 @@
+{
+  "ar": {
+    "api": "beidipedia.miraheze.org",
+    "fake": false,
+    "skip": false
+  },
+  "ast": {
+    "api": "ast.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "bg": {
+    "api": "bg.oxypedia.net",
+    "fake": false,
+    "skip": false
+  },
+  "bn": {
+    "api": "bn.uncyc.org",
+    "fake": false,
+    "skip": false
+  },
+  "bs": {
+    "api": "bs.neciklopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "ca": {
+    "api": "ca.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "cs": {
+    "api": "necyklopedie.org",
+    "fake": false,
+    "skip": false
+  },
+  "da": {
+    "api": "spademanns.fandom.com",
+    "fake": false,
+    "skip": false
+  },
+  "de": {
+    "api": "de.uncyclopedia.co",
+    "fake": false,
+    "skip": false
+  },
+  "el": {
+    "api": "frikipaideia.org",
+    "fake": false,
+    "skip": false
+  },
+  "en": {
+    "api": "en.uncyclopedia.co",
+    "fake": false,
+    "skip": false
+  },
+  "En": {
+    "api": "uncyclopedia.ca",
+    "fake": true,
+    "skip": false
+  },
+  "eo": {
+    "api": "neciklopedio.org",
+    "fake": false,
+    "skip": false
+  },
+  "et": {
+    "api": "ebatsuklopeedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "fa": {
+    "api": "fa.uncyc.org",
+    "fake": false,
+    "skip": false
+  },
+  "fi": {
+    "api": "hikipedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "fr": {
+    "api": "desencyclopedie.org",
+    "fake": false,
+    "skip": false
+  },
+  "gl": {
+    "api": "desgalipedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "got": {
+    "api": "unsaiklopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "he": {
+    "api": "eincyclopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "hr": {
+    "api": "hr.neciklopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "hu": {
+    "api": "unciklopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "id": {
+    "api": "tolololpedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "it": {
+    "api": "nonciclopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "ja": {
+    "api": "ansaikuropedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "jv": {
+    "api": "jv.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "ko": {
+    "api": "uncyclopedia.kr",
+    "fake": false,
+    "skip": true
+  },
+  "la": {
+    "api": "la.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "lt": {
+    "api": "juokopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "lv": {
+    "api": "lv.neciklopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "mk": {
+    "api": "mk.neciklopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "nl": {
+    "api": "oncyclopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "no": {
+    "api": "ikkepedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "oc": {
+    "api": "oc.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "pl": {
+    "api": "nonsa.pl",
+    "fake": false,
+    "skip": false
+  },
+  "pt": {
+    "api": "desciclopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "ru": {
+    "api": "absurdopedia.net",
+    "fake": false,
+    "skip": false
+  },
+  "sk": {
+    "api": "necyklopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "sr": {
+    "api": "sr.neciklopedija.org",
+    "fake": false,
+    "skip": false
+  },
+  "su": {
+    "api": "su.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "sv": {
+    "api": "psyklopedin.org",
+    "fake": false,
+    "skip": false
+  },
+  "th": {
+    "api": "th.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "tl": {
+    "api": "pekepedia.net",
+    "fake": false,
+    "skip": false
+  },
+  "tr": {
+    "api": "yansiklopedi.org",
+    "fake": false,
+    "skip": false
+  },
+  "uk": {
+    "api": "inciklopedia.org",
+    "fake": false,
+    "skip": false
+  },
+  "yi": {
+    "api": "yi.uncyclopedia.info",
+    "fake": false,
+    "skip": false
+  },
+  "zh": {
+    "api": "uncyclopedia.miraheze.org",
+    "fake": false,
+    "skip": false
+  },
+  "zh-hk": {
+    "api": "uncyclopedia.hk",
+    "fake": false,
+    "skip": false
+  },
+  "zh-tw": {
+    "api": "uncyclopedia.tw",
+    "fake": false,
+    "skip": false
+  }
+}
