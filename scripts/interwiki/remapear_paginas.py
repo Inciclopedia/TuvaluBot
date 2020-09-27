@@ -1,5 +1,5 @@
 import json
-import sys
+from typing import Generator
 
 from mwclient import LoginError
 from mwclient.page import Page
@@ -11,6 +11,7 @@ from scripts.interwiki.estrategias.estrategia_traduccion import EstrategiaTraduc
 from scripts.interwiki.estrategias.estrategia_wikipedia import EstrategiaWikipedia
 from scripts.interwiki.interwiki import Interwiki
 from scripts.interwiki.tareainterwiki import TareaInterwiki
+from scripts.listaarticulos.constructor_querys import ConstructorQuerys
 
 DESCRIPTION = "Este script remapea los interwikis de una página localizando en todos los interwikis"
 ESTRATEGIAS = [EstrategiaNombreDirecto, EstrategiaWikipedia, EstrategiaTraduccion]
@@ -46,24 +47,31 @@ class Plantilla(Tarea):
                     break
         tarea.guardar_cambios()
 
-    def tarea(self):
+    def obtener_lista_tareas(self) -> Generator[str, None, None]:
         if self.tareas == "":
-            self.logger.error("Necesito un nombre de archivo de tareas")
-            sys.exit(2)
-        try:
-            with open(self.tareas, "r", encoding='utf-8') as f:
-                for tarea in f.read().split('\n'):
-                    try:
-                        self.cliente.login(self.cliente.username, self.password)
-                    except LoginError:
-                        pass
+            constructor = ConstructorQuerys(self.cliente, "Remapear Interwikis")
+            query = constructor.invocar()
+            for page in query.invocar():
+                yield page
+        else:
+            try:
+                with open(self.tareas, "r", encoding='utf-8') as f:
+                    for tarea in f.read().split('\n'):
+                        yield tarea
+            except Exception as e:
+                print("Hubo un error al leer el archivo")
 
-                    try:
-                        self.remapear_pagina(tarea)
-                    except Exception as e:
-                        self.logger.error(str(e))
-        except Exception as e:
-            print("Hubo un error al leer el archivo")
+    def tarea(self):
+        for tarea in self.obtener_lista_tareas():
+            try:
+                self.cliente.login(self.cliente.username, self.password)
+            except LoginError:
+                pass
+            try:
+                self.remapear_pagina(tarea)
+            except Exception as e:
+                self.logger.error(str(e))
+        self.logger.info("Tarea completada")
 
 
 Principal(DESCRIPTION).iniciar(Plantilla())

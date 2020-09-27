@@ -157,10 +157,11 @@ class Condicion(object):
 
 class ConstructorQuerys(object):
 
-    def __init__(self, cliente: Site):
+    def __init__(self, cliente: Site, task_name: str):
         self.query = QueryArticulos(cliente)
         self.cliente = cliente
         self.namespaces = SiteInfo.namespace_list(cliente)
+        self.task_name = task_name
         self.condiciones = [
             Condicion("0", "Espacios de nombres", "namespaces", Tipo.SELECTOR_MULTIPLE_LISTA, [],
                       generar_opciones_ns(self.namespaces)),
@@ -190,7 +191,7 @@ class ConstructorQuerys(object):
 
     def preguntar_opcion(self) -> Optional[Condicion]:
         limpiar()
-        print("Consultar lista de artículos - Editor de condiciones")
+        print("%s - Editor de condiciones" % (self.task_name))
         for condicion in self.condiciones:
             condicion.pintar(self.query)
         opcion = input("Introduzca la tecla correspondiente a la opción que desea editar, o ninguna para confirmar: ")
@@ -208,7 +209,11 @@ class ConstructorQuerys(object):
             try:
                 opcion = self.preguntar_opcion()
                 if opcion is None:
-                    return self.query
+                    correct = input("Confirma que la consulta es correcta? (s/n): ")
+                    if correct == 's':
+                        return self.query
+                    else:
+                        continue
                 opcion.preguntar(self.query)
             except ValueError:
                 print("La opción introducida no es válida!")
