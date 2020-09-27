@@ -57,8 +57,12 @@ class Condicion(object):
         elif self.tipo == Tipo.SELECTOR:
             print("%s - %s: [%.40s]" % (self.tecla, self.nombre, self.valor.display))
         elif self.tipo == Tipo.SELECTOR_MULTIPLE_PIPE or self.tipo == Tipo.SELECTOR_MULTIPLE_LISTA:
-            disp = map(lambda item: next(filter(lambda opcion: opcion.id == item, self.opciones)).display, self.valor)
-            print("%s - %s: [%.40s]" % (self.tecla, self.nombre, ",".join(disp), ))
+            disp = []
+            for opcion in self.valor:
+                for opt in self.opciones:
+                    if opcion.id == opt.id:
+                        disp.append(opcion.display)
+            print("%s - %s: [%.40s]" % (self.tecla, self.nombre, ", ".join(disp), ))
         elif self.tipo == Tipo.BOOLEAN:
             print("%s - [%s] %s" % (self.tecla, "X" if self.valor else " ", self.nombre))
 
