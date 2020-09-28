@@ -1,6 +1,5 @@
-from mwclient import Site
-from common.tarea import Tarea
 from common.principal import Principal
+from common.tarea import Tarea
 
 DESCRIPTION = "Pon una descripción bonita de tu tarea aquí"
 
