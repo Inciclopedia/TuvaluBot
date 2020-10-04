@@ -1,13 +1,13 @@
+import re
 from logging import Logger
 from typing import List
 from urllib.parse import quote
 
+import requests
 from mwclient import Site
 from mwclient.page import Page
-import requests
 
 from scripts.interwiki.interwiki import Interwiki
-import re
 
 
 class TareaInterwiki(object):
@@ -119,33 +119,8 @@ class TareaInterwiki(object):
             tareas_hechas.append("ordenados interwikis")
         return "mant. interwiki: " + "; ".join(tareas_hechas)
 
-    def ordenar_interwikis(self):
-        resultados = re.findall(r"(?:\[|{){2}[^:\]}]+(?:|\|)[^\]}]+(?:\]|}){2}\n", self.texto)
-        interwikis = dict()
-        for interwiki in resultados:
-            interwiki.replace('{', '').replace('}', '').replace('[', '').replace(']', '')
-            if ':' in interwiki:
-                idioma = interwiki[2:interwiki.index(':')]
-                if self.__recuperar_interwiki(idioma) is not None:
-                    interwikis[idioma] = interwiki
-            elif '|' in interwiki:
-                idioma = interwiki[2:interwiki.index('|')]
-                if self.__recuperar_interwiki(idioma) is not None:
-                    interwikis[idioma] = interwiki
-        antes = interwikis.keys()
-        despues = sorted(antes, key=str.casefold)
-        if antes != despues:
-            self.editado = True
-            self.ordenados = True
-            for interwiki in interwikis.values():
-                # borramos todas las interwikis encontradas para recrear la lista
-                self.texto = self.texto.replace(interwiki, "")
-            self.texto = self.texto + "\n"
-            for idioma in despues:
-                self.texto = self.texto + interwikis[idioma]
 
     def guardar_cambios(self):
-        #self.ordenar_interwikis()
         if self.editado:
             self.logger.info("Guardando artículo actualizado %s", self.pagina.name)
             self.pagina.edit(self.texto, summary=self.generar_sumario())
