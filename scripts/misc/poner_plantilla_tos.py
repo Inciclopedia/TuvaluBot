@@ -1,22 +1,30 @@
 from typing import Generator
 
 from mwclient import LoginError
+from mwclient.page import Page
 
 from common.principal import Principal
-from scripts.interwiki.base_interwiki import BaseInterwiki
+from common.tarea import Tarea
 from scripts.listaarticulos.constructor_querys import ConstructorQuerys
 
-DESCRIPTION = "Este script remapea los interwikis de una página localizando en todos los interwikis"
+NAME = "Pon un título a tu script"
+DESCRIPTION = "Este script borra redirecciones dobles"
+PLANTILLA = "{{InciNuremberg}}"
 
-
-class RemapearPaginas(BaseInterwiki):
+class PonerPlantilla(Tarea):
 
     def __init__(self):
         super().__init__()
 
+    def procesar(self, articulo):
+        page = Page(self.cliente, articulo)
+        token = self.cliente.api("query", meta="tokens", type="csrf")["query"]["tokens"]["csrftoken"]
+        self.cliente.api("protect", title=articulo, protections="edit=sysop|move=sysop", reason="Protegido por violación de Términos de Uso", token=token)
+        self.logger.info("Procesado " + articulo)
+
     def obtener_lista_tareas(self) -> Generator[str, None, None]:
         if self.tareas == "":
-            constructor = ConstructorQuerys(self.cliente, "Remapear Interwikis")
+            constructor = ConstructorQuerys(self.cliente, NAME)
             query = constructor.invocar()
             for page in query.invocar():
                 yield page
@@ -35,10 +43,10 @@ class RemapearPaginas(BaseInterwiki):
             except LoginError:
                 pass
             try:
-                self.remapear_pagina(tarea)
+                self.procesar(tarea)
             except Exception as e:
                 self.logger.error(str(e))
         self.logger.info("Tarea completada")
 
 
-Principal(DESCRIPTION).iniciar(RemapearPaginas())
+Principal(DESCRIPTION).iniciar(PonerPlantilla())
