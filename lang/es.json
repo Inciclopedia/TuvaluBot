@@ -91,6 +91,12 @@
       "circular_reference": "Detectada referencia circular en {name}",
       "resolving": "Redirección doble encontrada en {redirect}, destino final {target}, resolviendo",
       "reason": "Resolviendo doble redirección, redirigiendo a {target}"
+    },
+    "massdelete": {
+      "name": "Borrado en masa",
+      "warning": "ATENCIÓN!!! ESTA TAREA BORRARÁ TODOS LOS ARTÍCULOS DE LA LISTA DE TAREAS!!!",
+      "confirm": "¿Seguro que quieres continuar? (s/n)",
+      "confirmkey": "s"
     }
   }
 }
