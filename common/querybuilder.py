@@ -139,7 +139,7 @@ class Condition(object):
             input(self.lang.t("common.press_enter"))
 
     def __ask_int(self):
-        valor = input(self.lang.t("querybuilder.input_value"))
+        valor = input(self.lang.t("querybuilder.input_value").format(name=self.name))
         if valor == "":
             self.value = None
         else:
@@ -150,7 +150,7 @@ class Condition(object):
                 input(self.lang.t("common.press_enter"))
 
     def __ask_string(self):
-        valor = input(self.lang.t("querybuilder.input_value"))
+        valor = input(self.lang.t("querybuilder.input_value").format(name=self.name))
         if valor == "":
             self.value = None
         else:

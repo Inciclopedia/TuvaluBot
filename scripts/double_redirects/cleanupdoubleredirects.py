@@ -23,7 +23,7 @@ class CleanupDoubleRedirects(JobWithQuery):
         redirection_chain = []
         while page.redirect:
             if page.name in redirection_chain:
-                self.logger.warning(self.lang.t("cleanupdoubleredirects.circular_reference".format(name=article)))
+                self.logger.warning(self.lang.t("cleanupdoubleredirects.circular_reference").format(name=article))
                 return
             redirection_chain.append(page.name)
             page = Page(self.client, page.redirects_to())

@@ -21,7 +21,7 @@ class MassDelete(JobWithQuery):
     def process(self, page_name):
         token = self.client.api("query", meta="tokens", type="csrf")["query"]["tokens"]["csrftoken"]
         self.client.api("delete", title=page_name, reason=REASON, token=token)
-        self.logger.info(self.lang.t("scripts.common.processed".format(name=page_name)))
+        self.logger.info(self.lang.t("common.processed").format(name=page_name))
 
     @property
     def querybuilder_title(self):
