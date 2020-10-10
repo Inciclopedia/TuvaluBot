@@ -97,6 +97,13 @@
       "warning": "WATCH OUT!!! THIS TASK WILL WIPE ALL THE ARTICLES FROM THE GIVEN TASK LIST!!!",
       "confirm": "Are you sure you want to proceed? (y/n)",
       "confirmkey": "y"
+    },
+    "unreferenced": {
+      "name": "Delete unreferenced pages",
+      "warning": "WATCH OUT!!! THIS TASK WILL WIPE ALL THE ARTICLES WITHOUT BACKLINKS FROM THE GIVEN TASK LIST!!!\nPlease use it only for deleting unused pictures",
+      "confirm": "Are you sure you want to proceed? (y/n)",
+      "confirmkey": "y",
+      "reason": "Unused"
     }
   }
 }

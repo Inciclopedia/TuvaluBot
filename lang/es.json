@@ -97,6 +97,13 @@
       "warning": "ATENCIÓN!!! ESTA TAREA BORRARÁ TODOS LOS ARTÍCULOS DE LA LISTA DE TAREAS!!!",
       "confirm": "¿Seguro que quieres continuar? (s/n)",
       "confirmkey": "s"
+    },
+    "unreferenced": {
+      "name": "Borrar páginas sin referencias",
+      "warning": "ATENCIÓN!!! ESTA TAREA BORRARÁ TODAS LAS PÁGINAS A LAS QUE NO ENLACE NADIE!!!\nÚsalo solo para borrar páginas sin uso",
+      "confirm": "¿Seguro que quieres continuar? (s/n)",
+      "confirmkey": "s",
+      "reason": "Sin uso"
     }
   }
 }
