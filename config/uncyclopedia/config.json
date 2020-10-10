@@ -1,8 +1,8 @@
 {
   "wiki": {
-    "name": "Inciclopedia",
-    "api": "inciclopedia.org",
-    "lang": "es"
+    "name": "Uncyclopedia",
+    "api": "uncyclopedia.co",
+    "lang": "en"
   },
   "client": {
     "display_language": "en"
@@ -17,14 +17,14 @@
       "package": "common.interwiki.strategies.translation_strategy",
       "name": "InterwikiTranslationStrategy",
       "args": {
-        "src_lang": "es"
+        "src_lang": "en"
       }
     },
     {
       "package": "common.interwiki.strategies.wikipedia_strategy",
       "name": "InterwikiWikipediaStrategy",
       "args": {
-        "wikipedia_api": "es.wikipedia.org"
+        "wikipedia_api": "en.wikipedia.org"
       }
     }
   ]

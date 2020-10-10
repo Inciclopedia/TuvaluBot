@@ -2,8 +2,8 @@ import inject
 
 
 def configure_injector(binder):
-    from util.config import IConfig, Config
-    binder.bind(IConfig, Config())
+    from util.configimpl import Config, ConfigImpl
+    binder.bind(Config, ConfigImpl())
     from util.lang import JsonLang, Lang
     binder.bind(Lang, JsonLang())
 

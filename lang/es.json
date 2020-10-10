@@ -12,10 +12,26 @@
     "task_completed": "Tarea completada",
     "press_enter": "Pulse Intro para continuar...",
     "type_a_number": "El valor introducido no es válido. Debe introducir un número entero.",
-    "option_does_not_exist": "La opción seleccionada no existe"
+    "option_does_not_exist": "La opción seleccionada no existe",
+    "processed": "Procesado {name}"
   },
   "interwiki": {
-    "querybuilder_title": "Remapear Interwikis"
+    "querybuilder_title": "Remapear Interwikis",
+    "remapping": "Remapeando página {name}...",
+    "locating": "Buscando artículo en {lang}...",
+    "attempting_strategy": "Probando estrategia {strategy}...",
+    "removing": "Eliminando interwiki {reason} [{lang}] {src} -> {dest}",
+    "creating": "Creando interwiki [{lang}] {src} -> {dest}",
+    "dbg_obsolete": "Interwiki obsoleta [{lang}] {src} -> {dest}",
+    "obsolete": "obsoleta",
+    "dbg_not_found": "Interwiki no encontrada [{lang}] {src} -> {dest}",
+    "not_found": "no encontrada",
+    "dbg_found": "Interwiki encontrada [{lang}] {src} -> {dest}",
+    "cleanup": "Limpiando artículo {name}",
+    "reason_header": "mant. interwiki: ",
+    "reason_added": "añadidos ",
+    "reason_removed": "eliminados ",
+    "saving": "Guardando artículo actualizado {name}"
   },
   "querybuilder": {
     "options_available": "Opciones disponibles para la condición {name}:",
@@ -23,6 +39,58 @@
     "input_value": "Introduzca el valor para la condición {name}. Deje vacío para no filtrar por esta condición: ",
     "title": "{taskname} - Editor de consultas",
     "choose_option": "Introduzca la tecla correspondiente a la opción que desea editar, o ninguna para confirmar: ",
-    "confirm_query": "Confirma que la consulta es correcta? (s/n): "
+    "confirm_query": "Confirma que la consulta es correcta? (s/n): ",
+    "confirm_query_key": "s",
+    "queries": {
+      "all": "Todas las páginas",
+      "namespaces": "Espacios de nombres",
+      "start": "Desde el artículo",
+      "end": "Hasta el artículo",
+      "prefix": "Cuyo título empiece for",
+      "filterredir": "Filtrado de redirecciones",
+      "nonredirects": "No incluir redirecciones",
+      "redirects": "Solo redirecciones",
+      "minsize": "Tamaño mínimo en bytes",
+      "maxsize": "Tamaño máximo en bytes",
+      "limit": "Máximo de páginas a devolver",
+      "dir": "Dirección en la que ordenar",
+      "ascending": "Ascendiente",
+      "descending": "Descendiente",
+      "filterlanglinks": "Filtrado de enlaces interwiki",
+      "withlanglinks": "Solo páginas con interwiki",
+      "withoutlanglinks": "Solo páginas sin interwiki",
+      "prmode": "Solo páginas protegidas",
+      "prtype": "Acciones protegidas",
+      "edit": "Edición",
+      "move": "Traslado",
+      "upload": "Subida",
+      "prlevel": "Nivel de protección",
+      "autoconfirmed": "Usuarios autonconfirmados",
+      "sysop": "Administradores y moderadores"
+    }
+  },
+  "scripts": {
+    "articlelist": {
+      "name": "Listado de artículos",
+      "choose_path": "Introduzca la ruta donde guardar el archivo con el listado: ",
+      "task_completed": "Se ha generado el listado en {fname}"
+    },
+    "addtemplate": {
+      "name": "Añadir plantilla",
+      "summary": "añadir plantilla {template}"
+    },
+    "protectpage": {
+      "name": "Proteger páginas"
+    },
+    "purge": {
+      "name": "Purgar artículos"
+    },
+    "cleanupdoubleredirects": {
+      "name": "Eliminar redirecciones dobles",
+      "processing": "Procesando redirección {name}",
+      "circular_reference": "Detectada referencia circular en {name}",
+      "resolving": "Redirección doble encontrada en {redirect}, destino final {target}, resolviendo",
+      "reason": "Resolviendo doble redirección, redirigiendo a {target}"
+    }
   }
 }

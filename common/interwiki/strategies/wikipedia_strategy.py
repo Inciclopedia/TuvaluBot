@@ -9,9 +9,9 @@ from common.interwiki.strategies.interwikistrategy import InterwikiStrategy
 
 class InterwikiWikipediaStrategy(InterwikiStrategy):
 
-    def __init__(self, client: Site):
+    def __init__(self, client: Site, wikipedia_api: str):
         super().__init__(client)
-        self.wp_client = Site("es.wikipedia.org")
+        self.wp_client = Site(wikipedia_api)
 
     def find_article_in_wikipedia(self, nombre) -> Optional[Page]:
         wp_article = Page(self.wp_client, nombre)

@@ -1,0 +1,96 @@
+{
+  "main": {
+    "starting_bot": "Starting TuvaluBot",
+    "logging_in": "Connected to {name}, logging in",
+    "logged_in": "Logged in as {user}",
+    "wrong_credentials": "Login error, wrong credentials. Quitting",
+    "maximum_retries": "Login error, maximum retries exceeded. Are we being rate limited? Quitting",
+    "api_error": "Login error, internal error. Is the wiki up?"
+  },
+  "common": {
+    "ioerror": "Error while reading file",
+    "task_completed": "Task completed",
+    "press_enter": "Press Enter to continue...",
+    "type_a_number": "Invalid value. Please type a number.",
+    "option_does_not_exist": "The chosen option does not exist",
+    "processed": "Processed {name}"
+  },
+  "interwiki": {
+    "querybuilder_title": "Remap Interwikis",
+    "remapping": "Remapping page {name}...",
+    "locating": "Locating article in {lang}...",
+    "attempting_strategy": "Attempting strategy {strategy}...",
+    "removing": "Removing {reason} interwiki [{lang}] {src} -> {dest}",
+    "creating": "Creating interwiki [{lang}] {src} -> {dest}",
+    "dbg_obsolete": "Obsolete interwiki [{lang}] {src} -> {dest}",
+    "obsolete": "obsolete",
+    "dbg_not_found": "Interwiki not found [{lang}] {src} -> {dest}",
+    "not_found": "not found",
+    "dbg_found": "Interwiki found [{lang}] {src} -> {dest}",
+    "cleanup": "Cleaning article {name}",
+    "reason_header": "interwiki mant.: ",
+    "reason_added": "added ",
+    "reason_removed": "removed ",
+    "saving": "Saving updated article {name}"
+  },
+  "querybuilder": {
+    "options_available": "Options available for condition {name}:",
+    "input_choice": "Type in the number for your desired choice, or leave blank to stop: ",
+    "input_value": "Type in the value for the condition {name}. Leave blank to not filter by this condition: ",
+    "title": "{taskname} - Query Editor",
+    "choose_option": "Press the key for the condition you wish to edit, or press Enter to confirm your query: ",
+    "confirm_query": "Do you confirm the query is correct? (y/n): ",
+    "confirm_query_key": "y",
+    "queries": {
+      "all": "All pages",
+      "namespaces": "Namespace",
+      "start": "From article",
+      "end": "To article",
+      "prefix": "Title begins with",
+      "filterredir": "Redirection filter",
+      "nonredirects": "Don't include redirects",
+      "redirects": "Only redirects",
+      "minsize": "Minimum size in bytes",
+      "maxsize": "Maximum size in bytes",
+      "limit": "Maximum pages to return",
+      "dir": "Sort direction",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "filterlanglinks": "Interwiki page filtering",
+      "withlanglinks": "Only pages with interwiki links",
+      "withoutlanglinks": "Only pages without interwiki links",
+      "prmode": "Only protected pages",
+      "prtype": "Protected actions",
+      "edit": "Edit",
+      "move": "Move",
+      "upload": "Upload",
+      "prlevel": "Protection level",
+      "autoconfirmed": "Autoconfirmed users",
+      "sysop": "Administrators"
+    }
+  },
+  "scripts": {
+    "articlelist": {
+      "name": "Article listing",
+      "choose_path": "Type in the path where you want to save the article list: ",
+      "task_completed": "The article list has been generated in {fname}"
+    },
+    "addtemplate": {
+      "name": "Add template",
+      "summary": "add template {template}"
+    },
+    "protectpage": {
+      "name": "Protect pages"
+    },
+    "purge": {
+      "name": "Purge articles"
+    },
+    "cleanupdoubleredirects": {
+      "name": "Remove double redirects",
+      "processing": "Processing redirect {name}",
+      "circular_reference": "Circular reference found in {name}",
+      "resolving": "Double redirect found at {redirect}, final destination {target}, resolving",
+      "reason": "Resolving double redirect, redirecting to {target}"
+    }
+  }
+}

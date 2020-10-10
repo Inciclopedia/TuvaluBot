@@ -1,7 +1,8 @@
 from common.botmain import BotMain
 from common.interwiki.interwikijob import InterwikiJob
 
-DESCRIPTION = "Este bot detecta automáticamente los artículos nuevos del último día en CambiosRecientes y crea los interwikis"
+NAME = "Interwiki Daily Job"
+DESCRIPTION = "This script remaps automatically the interwikis of the articles created in the last day"
 
 
 class InterwikiDailyJob(InterwikiJob):
@@ -9,17 +10,17 @@ class InterwikiDailyJob(InterwikiJob):
     def __init__(self):
         super().__init__()
 
-    def tarea(self):
+    def task(self):
         from datetime import datetime, timedelta
         end = datetime.now()
-        # añadimos tres horas de margen para que no se nos escape alguno entre ejecuciones por zona horaria
+        # three hours margin so we don't miss interwikis between cron jobs
         start = end - timedelta(days=1, hours=3)
         results = self.client.recentchanges(dir="older", namespace='0', type='new', limit=500)
         for article in results:
             if article["timestamp"] > start.timetuple():
                 if article["ns"] == 0:
-                    self.remapear_pagina(article["title"])
+                    self.remap_interwikis(article["title"])
 
 
-# No borres esta línea o tu script no iniciará:
+# Don't delete this line or your script won't start
 BotMain(DESCRIPTION).start(InterwikiDailyJob())

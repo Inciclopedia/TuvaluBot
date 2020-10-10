@@ -1,7 +1,6 @@
 from typing import Generator
 
 from mwclient import Site
-from mwclient.page import Page
 
 
 class ArticleQuery(object):
@@ -22,7 +21,7 @@ class ArticleQuery(object):
         self.dir = 'ascending'
         self.filterlanglinks = 'all'
 
-    def invocar(self) -> Generator[Page, None, None]:
+    def invoke(self) -> Generator[str, None, None]:
         if self.namespaces:
             for namespace in self.namespaces:
                 for page in self.client.allpages(self.start, self.prefix, namespace, self.filterredir, self.minsize,

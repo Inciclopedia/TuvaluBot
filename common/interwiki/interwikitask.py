@@ -8,13 +8,14 @@ from mwclient import Site
 from mwclient.page import Page
 
 from domain.interwiki import Interwiki
+from util.lang import Lang
 
 
 class InterwikiTask(object):
 
-    def __init__(self, page: Page, client: Site, interwikis: List[Interwiki], logger: Logger):
+    def __init__(self, page: Page, client: Site, interwikis: List[Interwiki], logger: Logger, lang: Lang):
         self.page = page
-        self.texto = self.page.text()
+        self.wikitext = self.page.text()
         self.client = client
         self.interwiki_links = dict()
         for language, link in page.langlinks():
@@ -27,13 +28,14 @@ class InterwikiTask(object):
         self.edited = False
         self.created = []
         self.deleted = []
+        self.lang = lang
 
     def interwiki_exists(self, idioma):
         return idioma in self.interwiki_links
 
     def __fetch_interwiki(self, idioma):
         for iw in self.interwikis:
-            if iw.idioma == idioma:
+            if iw.language == idioma:
                 return iw
         return None
 
@@ -45,89 +47,92 @@ class InterwikiTask(object):
             interwiki_wikicode = "[[" + idioma + ":" + articulo + "]]"
         return interwiki_wikicode
 
-    def remove_interwiki(self, idioma, razon, articulo):
-        self.logger.info("Eliminando interwiki %s [%s] %s -> %s", razon, idioma, self.page.name, articulo)
+    def remove_interwiki(self, language, reason, article):
+        self.logger.info(self.lang.t("interwiki.removing")
+                         .format(reason=reason, lang=language, src=self.page.name, dest=article))
         self.edited = True
-        self.texto = self.texto.replace(self.get_interwiki_wikicode(idioma, articulo), "")
-        self.deleted.append(idioma)
-        if idioma in self.interwiki_links:
-            del self.interwiki_links[idioma]
+        self.wikitext = self.wikitext.replace(self.get_interwiki_wikicode(language, article), "")
+        self.deleted.append(language)
+        if language in self.interwiki_links:
+            del self.interwiki_links[language]
 
-    def create_interwiki(self, idioma, articulo):
-        self.logger.info("Creando interwiki [%s] %s -> %s", idioma, self.page.name, articulo)
+    def create_interwiki(self, language, article):
+        self.logger.info(self.lang.t("interwiki.creating").format(lang=language, src=self.page.name, dest=article))
         self.edited = True
-        self.texto = self.texto + "\n" + self.get_interwiki_wikicode(idioma, articulo)
-        self.created.append(idioma)
+        self.wikitext = self.wikitext + "\n" + self.get_interwiki_wikicode(language, article)
+        self.created.append(language)
 
-    def locate_article_on_interwiki(self, idioma, articulo, existia_antes=False):
-        interwiki = self.__fetch_interwiki(idioma)
+    def locate_article_on_interwiki(self, language, article, existed_earlier=False):
+        interwiki = self.__fetch_interwiki(language)
         if interwiki is not None and interwiki.skip:
             return None
         if interwiki is None:
-            self.logger.debug("Interwiki obsoleta [%s] %s -> %s", idioma, self.page.name, articulo)
-            self.remove_interwiki(idioma, "obsoleta", articulo)
+            self.logger.debug(self.lang.t("interwiki.dbg_obsolete")
+                              .format(lang=language, src=self.page.name, dest=article))
+            self.remove_interwiki(language, self.lang.t("interwiki.obsolete"), article)
             return None
-        url = "http://" + interwiki.api + "/wiki/" + quote(articulo)
+        url = "http://" + interwiki.api + "/wiki/" + quote(article)
         try:
-            respuesta = requests.get(url)
+            response = requests.get(url)
         except:
-            # algún error de requests, no tocaremos nada...
-            return articulo if existia_antes else None
-        if respuesta.status_code == 404:
-            if existia_antes:
-                self.logger.debug("Interwiki no encontrada [%s] %s -> %s", idioma, self.page.name, articulo)
-                self.remove_interwiki(idioma, "no encontrada", articulo)
-                return None
-            else:
-                self.logger.debug("Interwiki no encontrada [%s] %s -> %s", idioma, self.page.name, articulo)
-                return None
+            # some requests error , don't change stuff
+            return article if existed_earlier else None
+        if response.status_code == 404:
+            self.logger.debug(self.lang.t("interwiki.dbg_not_found")
+                              .format(lang=language, src=self.page.name, dest=article))
+            if existed_earlier:
+                self.remove_interwiki(language, self.lang.t("interwiki.not_found"), article)
+            return None
+        elif response.status_code == 200:
+            self.logger.debug(self.lang.t("interwiki.dbg_found")
+                              .format(lang=language, src=self.page.name, dest=article))
+            if not existed_earlier:
+                self.create_interwiki(language, article)
+            return article
         else:
-            self.logger.debug("Interwiki encontrada [%s] %s -> %s", idioma, self.page.name, articulo)
-            if not existia_antes:
-                self.create_interwiki(idioma, articulo)
-            return articulo
+            # some other error , don't change stuff
+            return article if existed_earlier else None
 
-    def interwikis_faltantes(self):
-        faltan = []
+    def missing_interwikis(self):
+        missing = []
         for interwiki in self.interwikis:
             found = False
             if not interwiki.fake:
-                if interwiki.idioma in self.interwiki_links:
+                if interwiki.language in self.interwiki_links:
                     found = True
             else:
-                if re.search(r"{{" + interwiki.idioma + r"\|[^}]+(?:}){2}\n", self.texto) is not None:
+                if re.search(r"{{" + interwiki.language + r"\|[^}]+(?:}){2}\n", self.wikitext) is not None:
                     found = True
             if not found:
-                faltan.append(interwiki.idioma)
-        return faltan
+                missing.append(interwiki.language)
+        return missing
 
-    def limpiar_interwikis_rotos(self):
-        self.logger.debug("Limpiando artículo %s", self.page.name)
-        for idioma, articulos in list(self.interwiki_links.items()):
-            for articulo in articulos:
-                self.locate_article_on_interwiki(idioma, articulo, existia_antes=True)
+    def clean_broken_interwikis(self):
+        self.logger.debug(self.lang.t("interwiki.cleanup").format(name=self.page.name))
+        for lang, articles in list(self.interwiki_links.items()):
+            for article in articles:
+                self.locate_article_on_interwiki(lang, article, existed_earlier=True)
 
-    def generar_sumario(self):
-        tareas_hechas = []
+    def generate_summary(self):
+        tasks_done = []
         if len(self.created) > 0:
-            tareas_hechas.append("añadidos " + ", ".join(self.created))
+            tasks_done.append(self.lang.t("interwiki.reason_added") + ", ".join(self.created))
         if len(self.deleted) > 0:
-            tareas_hechas.append("borrados " + ", ".join(self.deleted))
-        return "mant. interwiki: " + "; ".join(tareas_hechas)
+            tasks_done.append(self.lang.t("interwiki.reason_removed") + ", ".join(self.deleted))
+        return self.lang.t("interwiki.reason_header") + "; ".join(tasks_done)
 
-
-    def guardar_cambios(self):
+    def save_changes(self):
         if self.edited:
-            self.logger.info("Guardando artículo actualizado %s", self.page.name)
-            self.page.edit(self.texto, summary=self.generar_sumario())
+            self.logger.info(self.lang.t("interwiki.saving").format(name=self.page.name))
+            self.page.edit(self.wikitext, summary=self.generate_summary())
             self.created = []
             self.deleted = []
             self.edited = False
             self.page = Page(self.page.site, self.page.name)
-            self.texto = self.page.text()
+            self.wikitext = self.page.text()
             self.interwiki_links = dict()
-            for idioma, link in self.page.langlinks():
-                if idioma not in self.interwiki_links:
-                    self.interwiki_links[idioma] = [link]
+            for lang, link in self.page.langlinks():
+                if lang not in self.interwiki_links:
+                    self.interwiki_links[lang] = [link]
                 else:
-                    self.interwiki_links[idioma].append(link)
+                    self.interwiki_links[lang].append(link)

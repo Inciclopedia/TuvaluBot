@@ -9,4 +9,4 @@ class InterwikiNameMatchStrategy(InterwikiStrategy):
         return task.locate_article_on_interwiki(language, task.page.name)
 
     def get_name(self) -> str:
-        return "Nombre Directo"
+        return "Name match"

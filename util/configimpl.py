@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 
 
-class IConfig(ABC):
+class Config(ABC):
 
     @abstractmethod
     def bootstrap(self, script_description):
@@ -24,7 +24,7 @@ class IConfig(ABC):
         raise NotImplementedError
 
 
-class Config(IConfig):
+class ConfigImpl(Config):
 
     def __init__(self):
         self.__args = None

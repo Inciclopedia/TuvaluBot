@@ -6,7 +6,7 @@ import inject
 from mwclient import Site, MaximumRetriesExceeded, LoginError, APIError
 
 from common.job import Job
-from util.config import IConfig
+from util.configimpl import Config
 from util.injector import bind_injector
 from util.lang import Lang
 
@@ -22,9 +22,9 @@ class BotMain(object):
         logging.basicConfig(format='[%(asctime)s] %(message)s')
         return logging.getLogger()
 
-    @inject.param('config', IConfig)
+    @inject.param('config', Config)
     @inject.param('lang', Lang)
-    def __init_system_phase2(self, config: IConfig = None, lang: Lang = None):
+    def __init_system_phase2(self, config: Config = None, lang: Lang = None):
         config.bootstrap(self.description)
         lang.set_lang(config.config["client"]["display_language"])
         logger = self.__init_logger()
