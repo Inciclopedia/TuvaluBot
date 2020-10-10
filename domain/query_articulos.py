@@ -30,6 +30,7 @@ class QueryArticulos(object):
                                                   self.limit, self.dir, self.filterlanglinks, self.end):
                     yield page
         else:
-            return self.cliente.allpages(self.start, self.prefix, None, self.filterredir, self.minsize,
-                                                  self.maxsize, self.prtype if self.prmode else None, self.prlevel,
-                                                  self.limit, self.dir, self.filterlanglinks, self.end)
+            for page in self.cliente.allpages(self.start, self.prefix, None, self.filterredir, self.minsize,
+                                              self.maxsize, self.prtype if self.prmode else None, self.prlevel,
+                                              self.limit, self.dir, self.filterlanglinks, self.end):
+                yield page
