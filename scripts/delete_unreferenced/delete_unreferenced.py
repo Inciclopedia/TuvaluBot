@@ -19,7 +19,7 @@ class DeleteUnreferencedPages(JobWithQuery):
 
     def process(self, article):
         result = self.client.api("query", list="imageusage", iutitle=article)
-        if len(result["query"]["backlinks"]) == 0:
+        if len(result["query"]["imageusage"]) == 0:
             token = self.client.api("query", meta="tokens", type="csrf")["query"]["tokens"]["csrftoken"]
             self.client.api("delete", title=article, reason=self.lang.t("scripts.unreferenced.reason"), token=token)
 
