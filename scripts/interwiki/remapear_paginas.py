@@ -1,44 +1,48 @@
 from typing import Generator
 
+import inject
 from mwclient import LoginError
 
-from common.principal import Principal
-from scripts.interwiki.base_interwiki import BaseInterwiki
+from common.botmain import BotMain
+from common.interwiki.interwikijob import InterwikiJob
 from scripts.listaarticulos.constructor_querys import ConstructorQuerys
+from util.lang import Lang
 
 DESCRIPTION = "Este script remapea los interwikis de una página localizando en todos los interwikis"
 
 
-class RemapearPaginas(BaseInterwiki):
+class InterwikiRemapper(InterwikiJob):
 
     def __init__(self):
         super().__init__()
 
-    def obtener_lista_tareas(self) -> Generator[str, None, None]:
-        if self.tareas == "":
-            constructor = ConstructorQuerys(self.cliente, "Remapear Interwikis")
+    @inject.param('lang', Lang)
+    def obtener_lista_tareas(self, lang: Lang = None) -> Generator[str, None, None]:
+        if self.task_file == "":
+            constructor = ConstructorQuerys(self.client, lang.t("interwiki.querybuilder_title"))
             query = constructor.invocar()
             for page in query.invocar():
                 yield page
         else:
             try:
-                with open(self.tareas, "r", encoding='utf-8') as f:
+                with open(self.task_file, "r", encoding='utf-8') as f:
                     for tarea in f.read().split('\n'):
                         yield tarea
             except Exception as e:
-                print("Hubo un error al leer el archivo")
+                print(lang.t("common.ioerror"))
 
-    def tarea(self):
+    @inject.param('lang', Lang)
+    def tarea(self, lang: Lang = None):
         for tarea in self.obtener_lista_tareas():
             try:
-                self.cliente.login(self.cliente.username, self.password)
+                self.client.login(self.client.username, self.password)
             except LoginError:
                 pass
             try:
                 self.remapear_pagina(tarea)
             except Exception as e:
                 self.logger.error(str(e))
-        self.logger.info("Tarea completada")
+        self.logger.info(lang.t("common.task_completed"))
 
 
-Principal(DESCRIPTION).iniciar(RemapearPaginas())
+BotMain(DESCRIPTION).start(InterwikiRemapper())

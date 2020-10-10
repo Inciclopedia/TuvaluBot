@@ -1,0 +1,28 @@
+{
+  "main": {
+    "starting_bot": "Iniciando TuvaluBot",
+    "logging_in": "Conectado a {name}, iniciando sesión",
+    "logged_in": "Sesión iniciada como {user}",
+    "wrong_credentials": "Login error, las credenciales no son válidas. Cerrando",
+    "maximum_retries": "Login error, máximo de reintentos. Parece que estamos limitados. Cerrando",
+    "api_error": "Login error, error interno. ¿Está funcionando Inci?"
+  },
+  "common": {
+    "ioerror": "Hubo un error al leer el archivo",
+    "task_completed": "Tarea completada",
+    "press_enter": "Pulse Intro para continuar...",
+    "type_a_number": "El valor introducido no es válido. Debe introducir un número entero.",
+    "option_does_not_exist": "La opción seleccionada no existe"
+  },
+  "interwiki": {
+    "querybuilder_title": "Remapear Interwikis"
+  },
+  "querybuilder": {
+    "options_available": "Opciones disponibles para la condición {name}:",
+    "input_choice": "Introduzca el número correspondiente a la opción que desea seleccionar, o deje en blanco para terminar: ",
+    "input_value": "Introduzca el valor para la condición {name}. Deje vacío para no filtrar por esta condición: ",
+    "title": "{taskname} - Editor de consultas",
+    "choose_option": "Introduzca la tecla correspondiente a la opción que desea editar, o ninguna para confirmar: ",
+    "confirm_query": "Confirma que la consulta es correcta? (s/n): "
+  }
+}

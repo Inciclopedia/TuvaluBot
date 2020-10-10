@@ -2,15 +2,15 @@ from typing import Generator
 
 from mwclient import LoginError
 
-from common.principal import Principal
-from common.tarea import Tarea
+from common.botmain import BotMain
+from common.job import Job
 from scripts.listaarticulos.constructor_querys import ConstructorQuerys
 
 NAME = "Pon un título a tu script"
 DESCRIPTION = "Este script borra redirecciones dobles"
 
 
-class PlantillaConSelector(Tarea):
+class PlantillaConSelector(Job):
 
     def __init__(self):
         super().__init__()
@@ -20,14 +20,14 @@ class PlantillaConSelector(Tarea):
         pass
 
     def obtener_lista_tareas(self) -> Generator[str, None, None]:
-        if self.tareas == "":
-            constructor = ConstructorQuerys(self.cliente, NAME)
+        if self.task_file == "":
+            constructor = ConstructorQuerys(self.client, NAME)
             query = constructor.invocar()
             for page in query.invocar():
                 yield page
         else:
             try:
-                with open(self.tareas, "r", encoding='utf-8') as f:
+                with open(self.task_file, "r", encoding='utf-8') as f:
                     for tarea in f.read().split('\n'):
                         yield tarea
             except Exception as e:
@@ -36,7 +36,7 @@ class PlantillaConSelector(Tarea):
     def tarea(self):
         for tarea in self.obtener_lista_tareas():
             try:
-                self.cliente.login(self.cliente.username, self.password)
+                self.client.login(self.client.username, self.password)
             except LoginError:
                 pass
             try:
@@ -46,4 +46,4 @@ class PlantillaConSelector(Tarea):
         self.logger.info("Tarea completada")
 
 
-Principal(DESCRIPTION).iniciar(PlantillaConSelector())
+BotMain(DESCRIPTION).start(PlantillaConSelector())

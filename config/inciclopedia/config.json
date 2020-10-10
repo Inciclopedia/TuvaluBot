@@ -1,0 +1,10 @@
+{
+  "wiki": {
+    "name": "Inciclopedia",
+    "api": "inciclopedia.org",
+    "lang": "es"
+  },
+  "client": {
+    "display_language": "es"
+  }
+}

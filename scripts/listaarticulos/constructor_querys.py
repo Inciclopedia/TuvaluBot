@@ -2,10 +2,12 @@ import os
 from enum import Enum
 from typing import List, Union, Optional, Iterable
 
+import inject
 from mwclient import Site
 
+from domain.articlequery import ArticleQuery
 from domain.namespace import Namespace
-from domain.query_articulos import QueryArticulos
+from util.lang import Lang
 from util.siteinfo import SiteInfo
 
 
@@ -38,7 +40,9 @@ def generar_opciones_ns(namespaces: Iterable[Namespace]):
 
 class Condicion(object):
 
-    def __init__(self, tecla, nombre, propiedad, tipo=Tipo.CADENA, valor=None, opciones: List[Opcion]=None, depende_de=None):
+    @inject.param("lang", Lang)
+    def __init__(self, tecla, nombre, propiedad, tipo=Tipo.CADENA, valor=None, opciones: List[Opcion]=None,
+                 depende_de=None, lang: Lang = None):
         self.tecla = tecla
         self.nombre = nombre
         self.tipo = tipo
@@ -46,8 +50,9 @@ class Condicion(object):
         self.propiedad = propiedad
         self.opciones = opciones
         self.depende_de = depende_de
+        self.lang = lang
 
-    def pintar(self, query: QueryArticulos):
+    def pintar(self, query: ArticleQuery):
         if self.depende_de is not None and getattr(query, self.depende_de) == False:
             return
         if self.tipo == Tipo.CADENA:
@@ -66,7 +71,7 @@ class Condicion(object):
         elif self.tipo == Tipo.BOOLEAN:
             print("%s - [%s] %s" % (self.tecla, "X" if self.valor else " ", self.nombre))
 
-    def preguntar(self, query: QueryArticulos):
+    def preguntar(self, query: ArticleQuery):
         limpiar()
         if self.tipo == Tipo.CADENA:
             self.__preguntar_cadena()
@@ -94,12 +99,11 @@ class Condicion(object):
         seleccionadas: Union[str, int, Opcion, List[Opcion]] = self.valor
         while True:
             limpiar()
-            print("Opciones disponibles para la condición " + self.nombre + ":")
+            print(self.lang.t("querybuilder.options_available").format(name=self.nombre))
             for num, opcion in opts:
                 seleccionada = len(list(filter(lambda x: x.id == opcion.id, seleccionadas))) > 0
                 print("%d - [%s] %s" % (num, "X" if seleccionada else " ", opcion.display))
-            valor = input("Introduzca el número correspondiente a la opción que desea seleccionar, o deje en blanco "
-                          + "para terminar: ")
+            valor = input(self.lang.t("querybuilder.input_choice"))
             if valor == "":
                 break
             try:
@@ -112,43 +116,41 @@ class Condicion(object):
                 if not encontrada:
                     seleccionadas.append(opcion)
             except IndexError:
-                print("La opción seleccionada no existe")
-                input("Pulse Intro para continuar...")
+                print(self.lang.t("common.option_does_not_exist"))
+                input(self.lang.t("common.press_enter"))
             except ValueError:
-                print("El valor introducido no es válido. Debe introducir un número entero.")
-                input("Pulse Intro para continuar...")
+                print(self.lang.t("common.type_a_number"))
+                input(self.lang.t("common.press_enter"))
         self.valor = seleccionadas
 
     def __preguntar_selector(self):
         opts = list(enumerate(self.opciones))
-        print("Opciones disponibles para la condición " + self.nombre + ":")
+        print(self.lang.t("querybuilder.options_available").format(name=self.nombre))
         for num, opcion in opts:
             print("%d - %s" % (num, opcion.display))
-        valor = input("Introduzca el número correspondiente a la opción que desea seleccionar: ")
+        valor = input(self.lang.t("querybuilder.input_choice"))
         try:
             self.valor = opts[int(valor)][1]
         except IndexError:
-            print("La opción seleccionada no existe")
-            input("Pulse Intro para continuar...")
+            print(self.lang.t("common.option_does_not_exist"))
+            input(self.lang.t("common.press_enter"))
         except ValueError:
-            print("El valor introducido no es válido. Debe introducir un número entero.")
-            input("Pulse Intro para continuar...")
+            print(self.lang.t("common.type_a_number"))
+            input(self.lang.t("common.press_enter"))
 
     def __preguntar_entero(self):
-        valor = input("Introduzca el valor para la condición " + self.nombre +
-                      ". Deje vacío para no filtrar por esta condición: ")
+        valor = input(self.lang.t("querybuilder.input_value"))
         if valor == "":
             self.valor = None
         else:
             try:
                 self.valor = int(valor)
             except ValueError:
-                print("El valor introducido no es válido. Debe introducir un número entero.")
-                input("Pulse Intro para continuar...")
+                print(self.lang.t("common.type_a_number"))
+                input(self.lang.t("common.press_enter"))
 
     def __preguntar_cadena(self):
-        valor = input("Introduzca el valor para la condición " + self.nombre +
-                      ". Deje vacío para no filtrar por esta condición: ")
+        valor = input(self.lang.t("querybuilder.input_value"))
         if valor == "":
             self.valor = None
         else:
@@ -157,8 +159,10 @@ class Condicion(object):
 
 class ConstructorQuerys(object):
 
-    def __init__(self, cliente: Site, task_name: str):
-        self.query = QueryArticulos(cliente)
+    @inject.param('lang', Lang)
+    def __init__(self, cliente: Site, task_name: str, lang: Lang = None):
+        self.lang = lang
+        self.query = ArticleQuery(cliente)
         self.cliente = cliente
         self.namespaces = SiteInfo.namespace_list(cliente)
         self.task_name = task_name
@@ -191,10 +195,10 @@ class ConstructorQuerys(object):
 
     def preguntar_opcion(self) -> Optional[Condicion]:
         limpiar()
-        print("%s - Editor de condiciones" % (self.task_name))
+        print(self.lang.t("querybuilder.title").format(taskname=self.task_name))
         for condicion in self.condiciones:
             condicion.pintar(self.query)
-        opcion = input("Introduzca la tecla correspondiente a la opción que desea editar, o ninguna para confirmar: ")
+        opcion = input(self.lang.t("querybuilder.choose_option"))
         if opcion == "":
             return None
         else:
@@ -204,17 +208,17 @@ class ConstructorQuerys(object):
                     return condicion
             raise ValueError()
 
-    def invocar(self) -> QueryArticulos:
+    def invocar(self) -> ArticleQuery:
         while True:
             try:
                 opcion = self.preguntar_opcion()
                 if opcion is None:
-                    correct = input("Confirma que la consulta es correcta? (s/n): ")
+                    correct = input(self.lang.t("querybuilder.confirm_query"))
                     if correct == 's':
                         return self.query
                     else:
                         continue
                 opcion.preguntar(self.query)
             except ValueError:
-                print("La opción introducida no es válida!")
-                input("Pulse Intro para continuar...")
+                print(self.lang.t("common.option_does_not_exist"))
+                input(self.lang.t("common.press_enter"))

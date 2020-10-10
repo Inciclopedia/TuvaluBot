@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from logging import Logger
+
 from mwclient import Site
 
 
-class Tarea(ABC):
+class Job(ABC):
 
     def __init__(self):
-        self.cliente: Site = None
+        self.client: Site = None
         self.logger: Logger = None
-        self.tareas = ""
+        self.task_file = ""
         self.password = ""
 
 
@@ -16,14 +17,14 @@ class Tarea(ABC):
     def tarea(self):
         raise
 
-    def bootstrap(self, cliente: Site, logger: Logger, tareas: str, password: str):
-        self.cliente = cliente
+    def bootstrap(self, client: Site, logger: Logger, task_file: str, password: str):
+        self.client = client
         self.logger = logger
-        self.tareas = tareas
+        self.task_file = task_file
         self.password = password
 
     def run(self):
-        if self.cliente is None or self.logger is None:
+        if self.client is None or self.logger is None:
             raise BootstrapError()
         self.tarea()
 

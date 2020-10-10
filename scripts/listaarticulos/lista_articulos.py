@@ -1,15 +1,15 @@
-from common.principal import Principal
-from common.tarea import Tarea
+from common.botmain import BotMain
+from common.job import Job
 from scripts.listaarticulos.constructor_querys import ConstructorQuerys
 
 DESCRIPTION = "Genera listados de artículos. Interactivo"
 
 
 # Cambia el nombre de Plantilla al de tu tarea... Cambialo abajo también
-class ListaArticulos(Tarea):
+class ListaArticulos(Job):
 
     def tarea(self):
-        constructor = ConstructorQuerys(self.cliente, "Consultar lista de artículos")
+        constructor = ConstructorQuerys(self.client, "Consultar lista de artículos")
         query = constructor.invocar()
         archivo = input("Introduzca la ruta donde guardar el archivo con el listado: ")
         with open(archivo, "w", encoding="utf-8") as f:
@@ -19,4 +19,4 @@ class ListaArticulos(Tarea):
 
 
 # No borres esta línea o tu script no iniciará:
-Principal(DESCRIPTION).iniciar(ListaArticulos())
+BotMain(DESCRIPTION).start(ListaArticulos())
