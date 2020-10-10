@@ -14,17 +14,17 @@
       "args": {}
     },
     {
-      "package": "common.interwiki.strategies.translation_strategy",
-      "name": "InterwikiTranslationStrategy",
-      "args": {
-        "src_lang": "es"
-      }
-    },
-    {
       "package": "common.interwiki.strategies.wikipedia_strategy",
       "name": "InterwikiWikipediaStrategy",
       "args": {
         "wikipedia_api": "es.wikipedia.org"
+      }
+    },
+    {
+      "package": "common.interwiki.strategies.translation_strategy",
+      "name": "InterwikiTranslationStrategy",
+      "args": {
+        "src_lang": "es"
       }
     }
   ]
