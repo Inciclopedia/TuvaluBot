@@ -1,17 +1,21 @@
 # TuvaluBot
 
-TuvaluBot no es un solo bot como tal si no varios scripts con tareas para que las ejecute el bot.
+to run the interwiki bot the following should be done:
+* create a config folder for your wiki, copy inciclopedia or uncyclopedia ones. It will need to be passed as first argument to the program 
+* edit your configuration files: config.json should include your wiki name, language, etc. Display_language for now must be either ``es`` or ``en``, it is the language of the program, the rest, change to your wiki language
+* interwiki.json should be the beforementioned interwikis JSON file, so you should go to Special:Interwiki and double check all the listed (and working!) interwikis are in the JSON file (otherwise it might remove interwikis you have in your wiki but not in the file)
+* create a bot user and give it a password in Special:BotPasswords
 
-Es la base de código de todos los bots Python de Inciclopedia.
+Install Python 3 (https://www.python.org/), clone the project, then from a terminal run in the project folder:
 
-## Creación de un bot
+```bash
+python -m pip install requirements.txt
+```
 
-Lo primero que hay que hacer es partir de ``plantilla.py`` que tiene un script básico que no hace nada.
+And finally to run the bot:
 
-A partir de esa plantilla, podemos usar los métodos de la biblioteca o de mwclient.
+```bash
+python scripts/interwiki/interwiki_remapper.py wiki_name_as_in_config_folder YourUserName@BotName BotPasswordYouCreated
+```
 
-## Funcionalidades
-
-A parte de las funcionalidades de bajo nivel de ``mwclient`` (https://mwclient.readthedocs.io/en/latest/), 
-a las que podemos acceder usando ``self.client``, tenemos algunas funciones de utilidad.
-
+And the query editor will pop up.
