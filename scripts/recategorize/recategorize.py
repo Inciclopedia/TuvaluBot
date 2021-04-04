@@ -5,6 +5,7 @@ from os import system
 from tempfile import NamedTemporaryFile
 from typing import IO
 from urllib.parse import quote
+import re
 
 import inject
 from mwclient.page import Page
@@ -110,10 +111,11 @@ class Recategorize(JobWithQuery):
 
     def get_recategorization(self, article: Page, query: str):
         actions = query.split(",")
-        addition_candidates = list(map(lambda x: self.category_name + x[1:], filter(lambda x: x[0] == '+', actions)))
-        removal_candidates = list(map(lambda x: x[1:].lower().strip(), filter(lambda x: x[0] == '-', actions)))
+        addition_candidates = list(map(lambda x: self.category_name + x[1:], filter(lambda x: x.strip()[0] == '+', actions)))
+        removal_candidates = list(map(lambda x: x[1:].lower().strip(), filter(lambda x: x.strip()[0] == '-', actions)))
         categories = list(map(lambda x: x.name, article.categories()))
-        additions = filter(lambda x: x.lower().strip() not in map(lambda y: y.lower().strip(), categories), addition_candidates)
+        additions = filter(lambda x: x.lower().strip() not in map(lambda y: y.lower().strip(), categories),
+                           addition_candidates)
         removals = filter(lambda x: ("".join(x.split(':')[1:])).lower().strip() in removal_candidates, categories)
         return list(additions), list(removals)
 
@@ -129,7 +131,7 @@ class Recategorize(JobWithQuery):
         print("Guardando...")
         wikitext = article.text()
         for removal in removals:
-            wikitext = wikitext.replace("\n[[{}]]".format(removal), "")
+            wikitext = re.sub(r'\[\[' + removal + r'(?:|.*)*\]\]', '', wikitext)
         for addition in additions:
             wikitext = wikitext + "\n[[{}]]".format(addition)
         plainadditions = ",".join(map(lambda x: "+" + ",".join(x.split(':')[1:]), additions))
