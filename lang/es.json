@@ -115,8 +115,8 @@
       "choosemassive": "2 - Trabajar con el modo masivo",
       "choosequit": "3 - Salir",
       "category_validation_error": "Alguna de las categorías introducidas no tiene + ni -",
-      "category_query_help": "Introduzca las categorías a cambiar separadas por comas (+Categoría para añadir, -Categoría para eliminar)",
-      "category_query_example": "Ejemplo: +Libros,-Libros de 1910, añadiría la categoría Libros y quitaría la cateogría Libros de 1910",
+      "category_query_help": "Introduzca las categorías a cambiar separadas por comas (+Categoría para añadir, -Categoría para eliminar, %Categoria Vieja%Categoria Nueva para renombrar)",
+      "category_query_example": "Ejemplo: +Libros,-Libros de 1910,%A%B añadiría la categoría Libros, quitaría la categoría Libros de 1910 y renombraría la categoría A a B",
       "category_query_browser": "Si quiere leer el artículo completo primero, escriba N y pulse Intro.",
       "articleinfo": {
         "name": "Título: ",

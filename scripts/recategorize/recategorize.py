@@ -66,11 +66,11 @@ class Recategorize(JobWithQuery):
                 if self.query == "":
                     key = input(self.lang.t("querybuilder.do_nothing")).lower()
                 else:
-                    additions, removals = self.get_recategorization(page, self.query)
+                    additions, removals, replaces = self.get_recategorization(page, self.query)
                     print("Acciones a realizar:")
-                    self.print_recategorization(additions, removals)
+                    self.print_recategorization(additions, removals, replaces)
                     key = input(self.lang.t("querybuilder.confirm_query")).lower()
-            self.do_recategorize(page, additions, removals)
+            self.do_recategorize(page, additions, removals, replaces)
         else:
             self.massive_file.write(article + "\n")
 
@@ -105,39 +105,48 @@ class Recategorize(JobWithQuery):
                 for line in f.readlines():
                     print("Recategorizando " + line.strip() + ":")
                     page = self.client.pages[line.strip()]
-                    additions, removals = self.get_recategorization(page, self.query)
-                    self.print_recategorization(additions, removals)
-                    self.do_recategorize(page, additions, removals)
+                    additions, removals, replaces = self.get_recategorization(page, self.query, replaces)
+                    self.print_recategorization(additions, removals, replaces)
+                    self.do_recategorize(page, additions, removals, replaces)
 
     def get_recategorization(self, article: Page, query: str):
         actions = query.split(",")
         addition_candidates = list(map(lambda x: self.category_name + x[1:], filter(lambda x: x.strip()[0] == '+', actions)))
         removal_candidates = list(map(lambda x: x[1:].lower().strip(), filter(lambda x: x.strip()[0] == '-', actions)))
+        replaces = list(map(lambda x: x[1:].strip(), filter(lambda x: x.strip()[0] == '%', actions)))
         categories = list(map(lambda x: x.name, article.categories()))
         additions = filter(lambda x: x.lower().strip() not in map(lambda y: y.lower().strip(), categories),
                            addition_candidates)
         removals = filter(lambda x: ("".join(x.split(':')[1:])).lower().strip() in removal_candidates, categories)
-        return list(additions), list(removals)
+        return list(additions), list(removals), replaces
 
-    def print_recategorization(self, additions, removals):
+    def print_recategorization(self, additions, removals, replaces):
         for addition in additions:
             print("   Añadir categoría " + addition)
         for removal in removals:
             print("   Eliminar categoría " + removal)
+        for replace in replaces:
+            print("   Reemplazar categoría " + replace.split("%")[0] + " por " + replace.split("%")[1])
 
-    def do_recategorize(self, article: Page, additions, removals):
+    def do_recategorize(self, article: Page, additions, removals, replaces):
         if self.query == "":
             return
         print("Guardando...")
         wikitext = article.text()
+        wikitext = wikitext.replace("[[Category:", "[[" + self.category_name)
         for removal in removals:
             wikitext = re.sub(r'\[\[' + removal + r'(?:|.*)*\]\]', '', wikitext)
         for addition in additions:
             wikitext = wikitext + "\n[[{}]]".format(addition)
+        for replace in replaces:
+            search, rep = replace.split("%")
+            wikitext = re.sub(r'\[\[' + self.category_name + search + r'(?:|.*)*\]\]', '[[' + self.category_name + rep + ']]',
+                              wikitext)
         plainadditions = ",".join(map(lambda x: "+" + ",".join(x.split(':')[1:]), additions))
         plainremovals = ",".join(map(lambda x: "-" + ",".join(x.split(':')[1:]), removals))
-        query = plainadditions + "; " + plainremovals
-        article.edit(wikitext, summary=self.lang.t("scripts.recategorize.reason") + query, minor=True)
+        plainreplaces = ",".join(map(lambda x: "=>".join(x.split('%')), replaces))
+        query = plainadditions + "; " + plainremovals + "; " + plainreplaces
+        article.edit(wikitext, summary=self.lang.t("scripts.recategorize.reason") + query, minor=True, bot=True)
 
     @property
     def querybuilder_title(self):
@@ -150,7 +159,7 @@ class Recategorize(JobWithQuery):
             webbrowser.open(browser)
             return False
         for subquery in query.split(','):
-            if subquery.strip()[0] not in ('+', '-'):
+            if subquery.strip()[0] not in ('+', '-', '%'):
                 print(self.lang.t("scripts.recategorize.category_validation_error"))
                 return False
         return True
