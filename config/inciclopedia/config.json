@@ -2,7 +2,8 @@
   "wiki": {
     "name": "Inciclopedia",
     "api": "inciclopedia.org",
-    "lang": "es"
+    "lang": "es",
+    "category_name": "Categoría:"
   },
   "client": {
     "display_language": "es"

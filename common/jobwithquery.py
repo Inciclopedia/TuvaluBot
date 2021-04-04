@@ -56,5 +56,5 @@ class JobWithQuery(Job, ABC):
                 self.process(task)
             except Exception as e:
                 self.logger.error(str(e))
-        self.logger.info(self.lang.t("common.task_completed"))
         self.after_process()
+        self.logger.info(self.lang.t("common.task_completed"))

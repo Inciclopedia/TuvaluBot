@@ -13,7 +13,8 @@
     "press_enter": "Pulse Intro para continuar...",
     "type_a_number": "El valor introducido no es válido. Debe introducir un número entero.",
     "option_does_not_exist": "La opción seleccionada no existe",
-    "processed": "Procesado {name}"
+    "processed": "Procesado {name}",
+    "type_query": "Introduzca la orden: "
   },
   "interwiki": {
     "querybuilder_title": "Remapear Interwikis",
@@ -41,6 +42,7 @@
     "choose_option": "Introduzca la tecla correspondiente a la opción que desea editar, o ninguna para confirmar: ",
     "confirm_query": "Confirma que la consulta es correcta? (s/n): ",
     "confirm_query_key": "s",
+    "do_nothing": "¿Confirma que no desea hacer nada? (s/n)",
     "queries": {
       "all": "Todas las páginas",
       "namespaces": "Espacios de nombres",
@@ -66,7 +68,8 @@
       "upload": "Subida",
       "prlevel": "Nivel de protección",
       "autoconfirmed": "Usuarios autonconfirmados",
-      "sysop": "Administradores y moderadores"
+      "sysop": "Administradores y moderadores",
+      "category": "Sólo artículos de la siguiente categoría (Incompatible con filtros 7, 8, 9, A, B y C)"
     }
   },
   "scripts": {
@@ -104,6 +107,23 @@
       "confirm": "¿Seguro que quieres continuar? (s/n)",
       "confirmkey": "s",
       "reason": "Sin uso"
+    },
+    "recategorize": {
+      "name": "Recategorizar artículos",
+      "choosemode": "Este programa puede recategorizar artículos de forma interactiva o masiva.\nEn el modo interactivo, se muestra cada artículo uno por uno, junto a parte del wikitexto, y puede elegir qué categorías añadir o quitar.\nEn el modo masivo, selecciona primero qué categorías añadir o quitar, y luego selecciona del listado de artículos todos los artículos a procesar.",
+      "chooseinteractive": "1 - Trabajar con el modo interactivo",
+      "choosemassive": "2 - Trabajar con el modo masivo",
+      "choosequit": "3 - Salir",
+      "category_validation_error": "Alguna de las categorías introducidas no tiene + ni -",
+      "category_query_help": "Introduzca las categorías a cambiar separadas por comas (+Categoría para añadir, -Categoría para eliminar)",
+      "category_query_example": "Ejemplo: +Libros,-Libros de 1910, añadiría la categoría Libros y quitaría la cateogría Libros de 1910",
+      "category_query_browser": "Si quiere leer el artículo completo primero, escriba N y pulse Intro.",
+      "articleinfo": {
+        "name": "Título: ",
+        "current_categories": "Categorías actuales: "
+      },
+      "notepad": "Se ha abierto Bloc de notas con el listado de artículos de la consulta realizada.\nElimine los que no desea cambiar.\nUna vez terminado, *CIERRE* el bloc de notas guardando los cambios y pulse Intro aquí para continuar...",
+      "reason": "Recategorización: "
     }
   }
 }

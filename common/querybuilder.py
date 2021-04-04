@@ -192,7 +192,8 @@ class QueryBuilder(object):
                       [Option(q("edit"), "edit"), Option(q("move"), "move"), Option(q("upload"), "upload")], "prmode"),
             Condition("C", q("prlevel"), "prlevel", Type.MULTIPLE_PIPE_SELECTOR, [],
                       [Option(q("autoconfirmed"), "autoconfirmed"),
-                       Option(q("sysop"), "sysop")], "prmode")
+                       Option(q("sysop"), "sysop")], "prmode"),
+            Condition("D", q("category"), "category")
         ]
 
     def __ask_option(self) -> Optional[Condition]:
