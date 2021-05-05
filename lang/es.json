@@ -124,6 +124,9 @@
       },
       "notepad": "Se ha abierto Bloc de notas con el listado de artículos de la consulta realizada.\nElimine los que no desea cambiar.\nUna vez terminado, *CIERRE* el bloc de notas guardando los cambios y pulse Intro aquí para continuar...",
       "reason": "Recategorización: "
+    },
+    "massreplace": {
+      "name": "Reemplazo masivo"
     }
   }
 }

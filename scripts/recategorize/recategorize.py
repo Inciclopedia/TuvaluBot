@@ -105,7 +105,7 @@ class Recategorize(JobWithQuery):
                 for line in f.readlines():
                     print("Recategorizando " + line.strip() + ":")
                     page = self.client.pages[line.strip()]
-                    additions, removals, replaces = self.get_recategorization(page, self.query, replaces)
+                    additions, removals, replaces = self.get_recategorization(page, self.query)
                     self.print_recategorization(additions, removals, replaces)
                     self.do_recategorize(page, additions, removals, replaces)
 
