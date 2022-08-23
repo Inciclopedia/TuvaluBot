@@ -36,9 +36,9 @@ class ConfigImpl(Config):
         import argparse
         parser = argparse.ArgumentParser(description=description)
         parser.add_argument('realm', type=str, help='Wiki from which we load config (inciclopedia, uncyclopedia...)')
-        parser.add_argument('user', type=str,
-                            help='Bot username')
-        parser.add_argument('password', type=str, help='Bot password')
+        parser.add_argument('user', type=str, nargs='?',
+                            help='Bot username', default=None)
+        parser.add_argument('password', type=str, nargs='?', help='Bot password', default=None)
         parser.add_argument('-t', '--tasks', default='', help='Location of the tasks file')
         parser.add_argument('-d', '--debug', action='store_true', help='Debug mode')
         args = parser.parse_args()

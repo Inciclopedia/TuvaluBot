@@ -40,21 +40,22 @@ class BotMain(object):
         args, config, logger, lang = self.__init_system()
         logger.info(lang.t("main.starting_bot"))
         client = Site(config["wiki"]["api"])
-        logger.info(lang.t("main.logging_in").format(name=config["wiki"]["name"]))
-        try:
-            client.user = args.user
-            client.password = args.password
-            client.login(args.user, args.password)
-            logger.info(lang.t("main.logged_in").format(user=args.user))
-        except LoginError:
-            logger.error(lang.t("main.wrong_credentials"))
-            sys.exit(2)
-        except MaximumRetriesExceeded:
-            logger.error(lang.t("main.maximum_retries"))
-            sys.exit(2)
-        except APIError:
-            logger.error(lang.t("main.api_error"))
-            sys.exit(2)
+        if args.user and args.password:
+            logger.info(lang.t("main.logging_in").format(name=config["wiki"]["name"]))
+            try:
+                client.user = args.user
+                client.password = args.password
+                client.login(args.user, args.password)
+                logger.info(lang.t("main.logged_in").format(user=args.user))
+            except LoginError:
+                logger.error(lang.t("main.wrong_credentials"))
+                sys.exit(2)
+            except MaximumRetriesExceeded:
+                logger.error(lang.t("main.maximum_retries"))
+                sys.exit(2)
+            except APIError:
+                logger.error(lang.t("main.api_error"))
+                sys.exit(2)
 
         job.bootstrap(client, logger, args.tasks, args.password)
         job.run()

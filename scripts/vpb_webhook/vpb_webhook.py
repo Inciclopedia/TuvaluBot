@@ -13,6 +13,7 @@ from common.job import Job
 
 DESCRIPTION = "VPB Webhook bot"
 WEBHOOK = "CONFIGURE_ME"
+DRY_RUN = False
 
 
 # Change the class name to your job name, change it also in last line
@@ -96,8 +97,11 @@ class VPBWebhook(Job):
                     }
                     print("Enviando POST al webhook con payload:")
                     print(json.dumps(payload))
-                    result = requests.post(WEBHOOK, data=json.dumps(payload),
-                                           headers={"Content-Type": "application/json;charset=UTF-8"})
+                    if not DRY_RUN:
+                        result = requests.post(WEBHOOK, data=json.dumps(payload),
+                                               headers={"Content-Type": "application/json;charset=UTF-8"})
+                    else:
+                        print("DRY RUN - NO SE HIZO NINGUNA PETICIÓN AL WEBHOOK")
                     time.sleep(2)
                     print("Enviado POST al webhook con respuesta " + str(result.status_code))
                     print("Cuerpo de la respuesta:")

@@ -2,3 +2,4 @@ mwclient
 googletrans
 inject
 selenium
+dewiki
