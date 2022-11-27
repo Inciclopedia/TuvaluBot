@@ -101,6 +101,12 @@
       "confirm": "¿Seguro que quieres continuar? (s/n)",
       "confirmkey": "s"
     },
+    "massblock": {
+      "name": "Bloqueo en masa",
+      "warning": "ATENCIÓN!!! ESTA TAREA BLOQUEARÁ TODAS LAS CUENTAS DE LA LISTA DE TAREAS!!!",
+      "confirm": "¿Seguro que quieres continuar? (s/n)",
+      "confirmkey": "s"
+    },
     "unreferenced": {
       "name": "Borrar páginas sin referencias",
       "warning": "ATENCIÓN!!! ESTA TAREA BORRARÁ TODAS LAS PÁGINAS A LAS QUE NO ENLACE NADIE!!!\nÚsalo solo para borrar páginas sin uso",
